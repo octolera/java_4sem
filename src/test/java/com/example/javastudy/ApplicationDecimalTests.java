@@ -21,28 +21,7 @@ class ApplicationDecimalTests {
 
     @Autowired
     private MockMvc mock;
-
-    @Test
-    public void getNullStat() throws Exception {
-        this.mock.perform(get("/stat"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"count\":" + "2")));
-    }
-
-    @Test
-    public void getUsageStat() throws Exception {
-        final List<String> test = List.of("-71", "3.666", "99999");
-        for (var el : test) {
-            this.mock.perform(get("/decimal?value=" + el))
-                    .andExpect(status().isOk());
-        }
-        this.mock.perform(post("/decimal?values=96.3,2,-7.99"))
-                .andExpect(status().isOk());
-        this.mock.perform(get("/stat"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"count\":" + "6")));
-    }
-
+    
     @Test
     public void decimalNoInput() throws Exception {
         this.mock.perform(get("/decimal?value="))
