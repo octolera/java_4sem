@@ -41,13 +41,13 @@ class ApplicationDecimalTests {
     
     @Test
     public void decimalOutOfRange() throws Exception {
-        final List<Double> test = List.of(Double.NaN, Double.NEGATIVE_INFINITY);
+        final List<Double> test = List.of(Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         for (var el : test) {
             this.mock.perform(get("/decimal?value=" + el))
                     .andExpect(status().is5xxServerError());
         }
     }
-
+    
     @Test
     public void decimalGoodInput() throws Exception {
         this.mock.perform(get("/decimal?value=" + "-78.99"))
@@ -59,6 +59,12 @@ class ApplicationDecimalTests {
     public void decimalBulkBadInput() throws Exception {
         this.mock.perform(post("/decimal?values=beep,bop,boop"))
                 .andExpect(status().isBadRequest());
+    }
+    
+    @Test
+    public void decimalBulkOutOfRangeInput() throws Exception {
+        this.mock.perform(post("/decimal?values=" + Double.NaN + "," + Double.NEGATIVE_INFINITY + "," + Double.POSITIVE_INFINITY))
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
