@@ -40,7 +40,7 @@ class ApplicationDecimalTests {
     }
     
     @Test
-    public void decimalOutOfRange() throws Exception {
+    public void decimalOutOfRangeInput() throws Exception {
         final List<Double> test = List.of(Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         for (var el : test) {
             this.mock.perform(get("/decimal?value=" + el))
