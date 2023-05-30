@@ -22,11 +22,17 @@ public class Decimal {
     }
 
     public Decimal(Double val, String bin) {
+        if(Double.isNaN(val) || Double.isInfinite(val)){
+            throw new DecimalException();
+        }
         value = val;
         bin_form = bin;
     }
 
     public Decimal(DecimalEntity ent) {
+        if(Double.isNaN(ent.value()) || Double.isInfinite(ent.value())){
+            throw new DecimalException();
+        }
         value = ent.value();
         bin_form = ent.binary();
     }
