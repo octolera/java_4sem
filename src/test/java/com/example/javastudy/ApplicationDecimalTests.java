@@ -38,6 +38,15 @@ class ApplicationDecimalTests {
                     .andExpect(status().isBadRequest());
         }
     }
+    
+    @Test
+    public void decimalOutOfRange() throws Exception {
+        final List<Double> test = List.of(Double.NaN, Double.NEGATIVE_INFINITY);
+        for (var el : test) {
+            this.mock.perform(get("/decimal?value=" + el))
+                    .andExpect(status().is5xxServerError());
+        }
+    }
 
     @Test
     public void decimalGoodInput() throws Exception {
