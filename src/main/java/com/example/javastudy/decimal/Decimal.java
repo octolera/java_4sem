@@ -16,17 +16,17 @@ public class Decimal {
         return bin_form;
     }
 
-    public Decimal(Double val) {
-        value = val;
+    public Decimal(Double value) {
+        value = value;
         calcBin();
     }
 
-    public Decimal(Double val, String bin) {
-        if(Double.isNaN(val) || Double.isInfinite(val)){
+    public Decimal(Double value, String bin_form) {
+        if(Double.isNaN(value) || Double.isInfinite(value)){
             throw new DecimalException();
         }
-        value = val;
-        bin_form = bin;
+        value = value;
+        bin_form = bin_forn;
     }
 
     public Decimal(DecimalEntity ent) {
@@ -37,11 +37,11 @@ public class Decimal {
         bin_form = ent.binary();
     }
 
-    public void setValue(Double val) {
-        if(Double.isNaN(val) || Double.isInfinite(val)){
+    public void setValue(Double value) {
+        if(Double.isNaN(value) || Double.isInfinite(value)){
             throw new DecimalException();
         }
-        value = val;
+        value = value;
         calcBin();
     }
 
