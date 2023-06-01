@@ -29,7 +29,7 @@ public class DecimalController {
     @GetMapping
     public Decimal decToBin(@RequestParam(value = "value", defaultValue = "0") Double value) {
         stats.incCounter();
-        return service.getByValue(value);
+        return service.getAndSave(value);
 
     }
 
@@ -38,7 +38,7 @@ public class DecimalController {
         DecimalStatistics values;
         List<Decimal> decimals = new ArrayList<>();
         request.forEach((x) -> {
-            decimals.add(service.getByValue(x));
+            decimals.add(service.getAndSave(x));
         });
         values = new DecimalStatistics(decimals.stream().map((x) -> x.getDecForm())
                 .collect(DoubleSummaryStatistics::new,
@@ -51,7 +51,7 @@ public class DecimalController {
     @PatchMapping
     public ResponseEntity<?> asyncDecBin(@RequestParam("values") List<Double> request) {
         request.forEach((x) -> {
-            CompletableFuture.runAsync(() -> service.getByValue(x));
+            CompletableFuture.runAsync(() -> service.getAndSave(x));
         });
         stats.incCounter();
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
