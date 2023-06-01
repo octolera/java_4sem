@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/decimal")
 public class DecimalController {
 
-    private final DecimalService storage;
+    private final DecimalService service;
 
     private final Statistics stats;
 
-    public DecimalController(DecimalService storage, Statistics stats) {
-        this.storage = storage;
+    public DecimalController(DecimalService service, Statistics stats) {
+        this.service = service;
         this.stats = stats;
     }
 
     @GetMapping
     public Decimal decToBin(@RequestParam(value = "value", defaultValue = "0") Double value) {
         stats.incCounter();
-        return storage.getByValue(value);
+        return service.getByValue(value);
 
     }
 
@@ -38,7 +38,7 @@ public class DecimalController {
         DecimalStatistics values;
         List<Decimal> decimals = new ArrayList<>();
         request.forEach((x) -> {
-            decimals.add(storage.getByValue(x));
+            decimals.add(service.getByValue(x));
         });
         values = new DecimalStatistics(decimals.stream().map((x) -> x.getDecForm())
                 .collect(DoubleSummaryStatistics::new,
@@ -51,7 +51,7 @@ public class DecimalController {
     @PatchMapping
     public ResponseEntity<?> asyncDecBin(@RequestParam("values") List<Double> request) {
         request.forEach((x) -> {
-            CompletableFuture.runAsync(() -> storage.getByValue(x));
+            CompletableFuture.runAsync(() -> service.getByValue(x));
         });
         stats.incCounter();
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
