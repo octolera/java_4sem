@@ -22,7 +22,7 @@ public class DecimalService {
     }
 
     @Cacheable("values")
-    public Decimal getByValue(Double key) {
+    public Decimal getAndSave(Double key) {
         var decimal = repository.findByValue(key);
         if (decimal == null) {
             decimal = new DecimalEntity(key);
